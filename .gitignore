@@ -1,0 +1,51 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+.venv_backend/
+node_modules/
+.DS_Store
+*.pyc
+__pycache__/
+
+# Python
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+.Python/
+env/
+.venv/
+venv/
+# Specific to your project's venv name:
+.venv_backend/ 
+pip-log.txt
+pip-delete-this-arg-in-pip.log
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/ # Jupyter notebooks
+
+# Machine Learning Models
+# It's common to ignore large model files and manage them separately or track the code that generates them.
+ml-model/models/*.keras
+ml-model/models/*.h5
+ml-model/models/*.pb # Protobuf format
+ml-model/saved_models/ # If you save models in a separate dir
+ml-model/detaset/ # Assuming 'detaset' is a directory for dataset
+
+# Environment variables
+.env
+.env.*
+*.env # In case you use .env files like local.env etc.
+
+# Node.js / React
+node_modules/
+.parcel-cache/
+.yarn/
+/build/ # React app build output
+/dist/ # Common build output directory
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+# Optional: if you use a specific IDE (e.g., VS Code)
+.vscode/
