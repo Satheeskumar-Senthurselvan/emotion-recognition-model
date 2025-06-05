@@ -29,9 +29,7 @@ pip-delete-this-arg-in-pip.log
 # It's common to ignore large model files and manage them separately or track the code that generates them.
 ml-model/models/*.keras
 ml-model/models/*.h5
-ml-model/models/*.pb # Protobuf format
-ml-model/saved_models/ # If you save models in a separate dir
-ml-model/detaset/ # Assuming 'detaset' is a directory for dataset
+ml-model/detaset/
 
 # Environment variables
 .env
