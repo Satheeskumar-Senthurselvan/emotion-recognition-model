@@ -29,7 +29,7 @@ pip-delete-this-arg-in-pip.log
 # Note: .keras files are kept in git for storage (local system has limited space)
 ml-model/*.h5
 # ml-model/*.keras  # Commented out - keeping models in git for backup
-ml-model/dataset-*/
+# ml-model/dataset-*/  # Commented out - uploading datasets to GitHub for storage backup
 
 # Environment variables
 .env
