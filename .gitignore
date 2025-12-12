@@ -25,13 +25,10 @@ pip-delete-this-arg-in-pip.log
 .pytest_cache/
 .ipynb_checkpoints/ # Jupyter notebooks
 
-# Machine Learning Models
-# It's common to ignore large model files and manage them separately or track the code that generates them.
-ml-model/models/*.keras
-ml-model/models/*.h5
-# Ignore all dataset directories (they contain thousands of images)
+# Machine Learning Model files
+ml-model/*.h5
 ml-model/dataset-*/
-ml-model/*.keras
+#ml-model/*.keras
 
 # Environment variables
 .env
