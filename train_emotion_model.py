@@ -7,21 +7,31 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 import matplotlib.pyplot as plt
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 K.clear_session()
 gc.collect()
-import os
-os.system("find /Users/satheeskumar/Technologies/FER/dataset1/ -name '.DS_Store' -type f -delete")
+
+# Clean up .DS_Store files
+dataset_cleanup_path = os.getenv('DATASET_CLEANUP_PATH', 'ml-model/')
+if os.path.exists(dataset_cleanup_path):
+    os.system(f"find {dataset_cleanup_path} -name '.DS_Store' -type f -delete")
 os.system("find . -type d -name '__pycache__' -exec rm -r {} +")
 
 
-# Configurations
-IMG_SIZE = (96, 96)  
-BATCH_SIZE = 32
-NUM_CLASSES = 7  
-EPOCHS = 50
-TRAIN_DIR = 'dataset1/train' 
-VAL_DIR = 'dataset1/val'
-MODEL_SAVE_PATH = 'models/stress_fer_resnet50.keras'
+# Configurations - Load from environment variables with defaults
+img_size_str = os.getenv('IMG_SIZE', '96,96')
+IMG_SIZE = tuple(map(int, img_size_str.split(',')))
+BATCH_SIZE = int(os.getenv('BATCH_SIZE', '32'))
+NUM_CLASSES = int(os.getenv('NUM_CLASSES', '7'))
+EPOCHS = int(os.getenv('EPOCHS', '50'))
+TRAIN_DIR = os.getenv('DATASET_TRAIN_DIR', 'ml-model/dataset-6.2/train')
+VAL_DIR = os.getenv('DATASET_VAL_DIR', 'ml-model/dataset-6.2/val')
+MODEL_SAVE_PATH = os.getenv('MODEL_SAVE_PATH', 'ml-model/stress_fer_resnet50.keras')
 
 # Data Augmentation and Loading
 train_datagen = ImageDataGenerator(
@@ -102,7 +112,8 @@ history_fine = model.fit(
 )
 
 # Save final model in Keras native format
-model.save('models/final_stress_model.keras')
+FINAL_MODEL_PATH = os.getenv('FINAL_MODEL_PATH', 'ml-model/final_stress_model.keras')
+model.save(FINAL_MODEL_PATH)
 print(train_generator.class_indices)
 
 # Plot training & validation accuracy

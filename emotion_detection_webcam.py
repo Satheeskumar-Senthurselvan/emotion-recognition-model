@@ -1,10 +1,16 @@
 import cv2
 import numpy as np
+import os
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Load the trained model
-model = load_model('models/final_stress_model.keras')
+MODEL_PATH = os.getenv('MODEL_PATH', 'ml-model/emotion-recognition-model-6.2.keras')
+model = load_model(MODEL_PATH)
 
 # Define class labels (adjust if different)
 emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Neutral', 'Sad', 'Surprise']

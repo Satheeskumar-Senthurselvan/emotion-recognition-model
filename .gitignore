@@ -29,12 +29,17 @@ pip-delete-this-arg-in-pip.log
 # It's common to ignore large model files and manage them separately or track the code that generates them.
 ml-model/models/*.keras
 ml-model/models/*.h5
-ml-model/detaset/
+# Ignore all dataset directories (they contain thousands of images)
+ml-model/dataset-*/
+ml-model/*.keras
 
 # Environment variables
 .env
-.env.*
+.env.local
+.env.*.local
 *.env # In case you use .env files like local.env etc.
+# Allow .env.example files
+!.env.example
 
 # Node.js / React
 node_modules/

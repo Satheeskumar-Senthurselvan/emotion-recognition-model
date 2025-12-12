@@ -1,11 +1,17 @@
 import cv2
 import numpy as np
 import webbrowser
+import os
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Load model and face detector
-model = load_model('models/final_stress_model.keras')
+MODEL_PATH = os.getenv('MODEL_PATH', 'ml-model/emotion-recognition-model-6.2.keras')
+model = load_model(MODEL_PATH)
 face_detector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
 # Emotion and stress mapping
@@ -20,8 +26,8 @@ stress_map = {
     'Neutral': 'None'
 }
 
-# Spotify calm playlist link
-spotify_playlist_url = "https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0"  # Peaceful Piano
+# Spotify calm playlist link - Load from environment variable
+spotify_playlist_url = os.getenv('SPOTIFY_PLAYLIST_URL', 'https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0')
 spotify_opened = False
 
 # Start webcam

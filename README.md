@@ -1,34 +1,36 @@
-# CalmConnect
+# Emotion Recognition Model
 
 ## 🌟 Project Overview
 
-CalmConnect is an innovative full-stack application designed to provide real-time stress detection and personalized well-being support. It integrates a robust Python backend, a dynamic React frontend, and an intelligent machine learning model to offer users a comprehensive tool for managing stress and enhancing their mental well-being.
+This project is a real-time emotion recognition system using deep learning. It leverages a ResNet50-based convolutional neural network trained on facial expression data to detect and classify emotions (Angry, Disgust, Fear, Happy, Neutral, Sad, Surprise) from webcam input. The system can map detected emotions to stress levels and provide interventions such as opening calming Spotify playlists.
 
 ## ✨ Features
 
-* **Real-time Stress Detection:** Utilizes a machine learning model to analyze input (e.g., physiological data, or other specified inputs) and detect stress levels in real-time.
-* **Personalized Well-being Support:** Offers tailored recommendations or interventions based on detected stress levels.
-* **Intuitive User Interface:** A responsive and easy-to-use React frontend for seamless interaction.
-* **Robust Backend:** A Python-based backend handling data processing, API endpoints, and communication with the ML model.
-* **Modular Design:** Separate components for backend, frontend, and ML model for easier development and scaling.
+* **Real-time Emotion Recognition:** Detects 7 different emotions (Angry, Disgust, Fear, Happy, Neutral, Sad, Surprise) from live webcam feed
+* **Stress Level Mapping:** Maps detected emotions to stress levels (None, Low, Moderate, High)
+* **Model Training Pipeline:** Complete training script with data augmentation, transfer learning, and fine-tuning
+* **Model Evaluation:** Comprehensive evaluation with confusion matrix, classification report, and sample predictions
+* **Interactive Interventions:** Automatic Spotify playlist intervention when stress is detected
+* **Configurable Setup:** Environment-based configuration for easy customization
 
 ## 🚀 Technologies Used
 
-**Backend:**
-* Python (e.g., Flask/Django/FastAPI - *specify which one you're using*)
-* (Any specific Python libraries like Pandas, NumPy, etc.)
-
-**Frontend:**
-* React.js
-* Vite (for build tool)
-* (Any specific UI libraries like Material-UI, Chakra UI, etc.)
-
 **Machine Learning:**
-* Python
-* TensorFlow / Keras (or PyTorch, Scikit-learn - *specify which one you're using*)
-* (Any specific ML libraries like OpenCV for webcam, Librosa for audio, etc.)
+* Python 3.9+
+* TensorFlow / Keras
+* ResNet50 (pre-trained on ImageNet)
+* OpenCV (for webcam access and face detection)
+* scikit-learn (for evaluation metrics)
 
-**Other:**
+**Data Processing:**
+* NumPy
+* Matplotlib (for visualization)
+* Seaborn (for confusion matrix visualization)
+
+**Configuration:**
+* python-dotenv (for environment variable management)
+
+**Development:**
 * Git (for version control)
 
 ## 🛠️ Getting Started
@@ -39,91 +41,159 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 Before you begin, ensure you have the following installed:
 
-* [Git](https://git-scm.com/downloads)
-* [Node.js](https://nodejs.org/en/download/) (LTS recommended)
 * [Python 3.9+](https://www.python.org/downloads/)
-* (Optional: pipenv or virtualenv for Python virtual environments)
+* [Git](https://git-scm.com/downloads)
+* (Recommended) A virtual environment tool (venv, virtualenv, or conda)
+* A webcam (for real-time emotion detection)
 
 ### Installation
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/Satheeskumar-Senthurselvan/calmconnect.git](https://github.com/Satheeskumar-Senthurselvan/calmconnect.git)
-    cd calmconnect
+    git clone https://github.com/Satheeskumar-Senthurselvan/emotion-recognition-model.git
+    cd emotion-recognition-model
     ```
 
-2.  **Backend Setup:**
+2.  **Create and activate a virtual environment:**
     ```bash
-    cd backend
-    python -m venv .venv_backend  # Create a virtual environment
-    source .venv_backend/bin/activate # Activate the virtual environment (Linux/macOS)
-    # For Windows: .venv_backend\Scripts\activate
-    pip install -r requirements.txt # Install dependencies (You'll need to create this file)
+    python -m venv venv
+    # On Linux/macOS:
+    source venv/bin/activate
+    # On Windows:
+    venv\Scripts\activate
     ```
 
-3.  **Frontend Setup:**
+3.  **Install dependencies:**
     ```bash
-    cd ../frontend # Go back to the root and then into frontend
-    npm install    # Install Node.js dependencies
+    pip install tensorflow opencv-python numpy matplotlib seaborn scikit-learn python-dotenv
+    ```
+    
+    Or create a `requirements.txt` file with:
+    ```
+    tensorflow>=2.10.0
+    opencv-python>=4.6.0
+    numpy>=1.23.0
+    matplotlib>=3.6.0
+    seaborn>=0.12.0
+    scikit-learn>=1.1.0
+    python-dotenv>=0.21.0
+    ```
+    
+    Then install:
+    ```bash
+    pip install -r requirements.txt
     ```
 
-4.  **ML Model Setup:**
+4.  **Set up environment variables:**
     ```bash
-    cd ../ml-model # Go back to the root and then into ml-model
-    source ../backend/.venv_backend/bin/activate # Activate backend venv if ML uses same
-    # Or, if separate: python -m venv .venv_ml && source .venv_ml/bin/activate
-    pip install -r requirements.txt # Install ML dependencies (You'll need to create this file)
+    cp .env.example .env
     ```
-    *(Note: Ensure you create `requirements.txt` files in `backend/` and `ml-model/` by running `pip freeze > requirements.txt` within their respective active virtual environments.)*
+    
+    Edit `.env` file and configure the paths to match your system:
+    - Dataset paths (`DATASET_TRAIN_DIR`, `DATASET_VAL_DIR`, `DATASET_TEST_DIR`)
+    - Model paths (`MODEL_PATH`, `MODEL_SAVE_PATH`, `FINAL_MODEL_PATH`)
+    - Spotify playlist URL (if using intervention feature)
+    - Other configuration parameters (batch size, epochs, etc.)
 
 ### Running the Application
 
-Follow these steps to run each part of the application:
+Make sure your virtual environment is activated before running any scripts.
 
-1.  **Start the Backend:**
-    ```bash
-    cd backend
-    source .venv_backend/bin/activate
-    python app.py # Or whatever command starts your backend
-    ```
-    *(Specify the exact command for your backend, e.g., `flask run`, `python manage.py runserver`, `uvicorn main:app --reload`)*
+#### Training the Model
 
-2.  **Start the Frontend:**
-    ```bash
-    cd frontend
-    npm run dev # Or `npm start` depending on your setup
-    ```
-    The frontend will typically open in your browser at `http://localhost:5173` (or similar).
+Train a new emotion recognition model:
+```bash
+python train_emotion_model.py
+```
 
-3.  **Run the ML Model (if standalone or requires separate execution):**
-    *(Describe how to run `predict.py` or `stress_detection_webcam.py` if they are meant to be run independently or interact with the backend in a specific way)*
-    ```bash
-    cd ml-model
-    source ../backend/.venv_backend/bin/activate # or your ML venv
-    python predict.py # Example
-    ```
+This will:
+- Load and preprocess training/validation datasets
+- Train a ResNet50-based model with transfer learning
+- Save checkpoints and the final model
+- Display training/validation accuracy and loss plots
+
+#### Evaluating the Model
+
+Evaluate the trained model on test data:
+```bash
+python evaluate_model.py
+```
+
+This will:
+- Load the trained model
+- Run predictions on test dataset
+- Generate a classification report
+- Display a confusion matrix
+- Show sample predictions with visualizations
+
+#### Real-time Emotion Detection
+
+Run real-time emotion detection from webcam:
+```bash
+python emotion_detection_webcam.py
+```
+
+Features:
+- Detects faces in real-time from webcam feed
+- Predicts emotion and maps to stress level
+- Displays emotion and stress level on video feed
+- Press 'q' to quit
+
+**macOS Camera Permission Note:**
+If you encounter "not authorized to capture video" error on macOS, you need to grant camera access:
+1. Open **System Settings** → **Privacy & Security** → **Camera**
+2. Enable camera access for your terminal app (Terminal, iTerm2, etc.)
+3. Run the script again after granting permissions
+
+#### Emotion Detection with Intervention
+
+Run emotion detection with automatic Spotify intervention:
+```bash
+python emotion_intervention_spotify.py
+```
+
+Features:
+- All features from `emotion_detection_webcam.py`
+- Automatically opens Spotify playlist when stress is detected
+- Playlist URL can be configured in `.env` file
 
 ## 📂 Project Structure
-calmconnect/
-├── backend/                  # Python backend application
-│   ├── .venv_backend/        # Python virtual environment (ignored by Git)
-│   ├── app.py                # Main backend application file
-│   └── requirements.txt      # Backend dependencies
-├── frontend/                 # React.js frontend application
-│   ├── node_modules/         # Node.js dependencies (ignored by Git)
-│   ├── src/                  # React source code
-│   ├── public/               # Static assets
-│   ├── package.json          # Frontend dependencies and scripts
-│   └── ...                   # Other frontend files
-├── ml-model/                 # Machine Learning components
-│   ├── model_training_experiment.ipynb # Jupyter notebook for training
-│   ├── predict.py            # Prediction script
-│   ├── train_model.py        # Model training script
-│   ├── stress_detection_webcam.py # Example ML usage
-│   ├── stress_spotify_app.py # Example ML usage
-│   └── requirements.txt      # ML model dependencies
-├── .gitignore                # Specifies intentionally untracked files
-└── README.md                 # Project overview and instructions
+
+```
+emotion-recognition-model/
+├── ml-model/                           # Machine Learning data and models
+│   ├── dataset-5.5/                   # Dataset version 5.5
+│   │   ├── train/                     # Training images (7 emotion classes)
+│   │   └── val/                       # Validation images (7 emotion classes)
+│   ├── dataset-6.2/                   # Dataset version 6.2
+│   │   ├── train/                     # Training images (7 emotion classes)
+│   │   ├── val/                       # Validation images (7 emotion classes)
+│   │   └── test/                      # Test images (7 emotion classes)
+│   ├── emotion-recognition-model-5.5.keras  # Pre-trained model (v5.5)
+│   └── emotion-recognition-model-6.2.keras  # Pre-trained model (v6.2)
+│
+├── train_emotion_model.py             # Train the emotion recognition model
+├── evaluate_model.py                  # Evaluate model on test data
+├── emotion_detection_webcam.py        # Real-time emotion detection from webcam
+├── emotion_intervention_spotify.py    # Emotion detection with Spotify intervention
+│
+├── .env.example                       # Environment variables template
+├── .env                               # Your local environment variables (not in git)
+├── requirements.txt                   # Python dependencies
+├── .gitignore                         # Git ignore file
+└── README.md                          # This file
+```
+
+## 🔧 Configuration
+
+All configuration is managed through environment variables. Copy `.env.example` to `.env` and customize:
+
+- **Dataset Paths**: Point to your dataset directories
+- **Model Paths**: Specify where to save/load models
+- **Training Parameters**: Batch size, epochs, image size, etc.
+- **Spotify Integration**: Playlist URL for interventions
+
+See `.env.example` for all available configuration options.
 
 ## 🤝 Contributing
 
@@ -142,7 +212,22 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## 📧 Contact
 
-Satheeskumar Senthurselvan - [Your GitHub Profile Link] - [Your Email Address]
+Satheeskumar Senthurselvan - [https://github.com/Satheeskumar-Senthurselvan] - [satheeskumar.dev@gmail.com]
 
-Project Link: [https://github.com/Satheeskumar-Senthurselvan/calmconnect](https://github.com/Satheeskumar-Senthurselvan/calmconnect)
+Project Link: [https://github.com/Satheeskumar-Senthurselvan/emotion-recognition-model](https://github.com/Satheeskumar-Senthurselvan/emotion-recognition-model)
+
+## 📝 Model Details
+
+- **Architecture**: ResNet50 (transfer learning)
+- **Input Size**: 96x96 RGB images
+- **Classes**: 7 emotions (Angry, Disgust, Fear, Happy, Neutral, Sad, Surprise)
+- **Training**: Transfer learning with frozen base layers, then fine-tuning
+- **Data Augmentation**: Rotation, zoom, shifts, horizontal flip
+
+## 🎯 Emotion to Stress Mapping
+
+- **High Stress**: Angry, Disgust, Fear
+- **Moderate Stress**: Sad
+- **Low Stress**: Surprise
+- **No Stress**: Happy, Neutral
 

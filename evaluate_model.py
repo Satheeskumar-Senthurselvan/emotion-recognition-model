@@ -6,14 +6,23 @@ import seaborn as sns
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from sklearn.metrics import classification_report, confusion_matrix
+from dotenv import load_dotenv
 
-os.system("find /Users/satheeskumar/Technologies/FER/dataset/ -name '.DS_Store' -type f -delete")
+# Load environment variables from .env file
+load_dotenv()
 
-IMG_SIZE = (96, 96)
-BATCH_SIZE = 32
-NUM_CLASSES = 7
-MODEL_PATH = 'models/final_stress_model.keras'
-TEST_DIR = 'dataset1/test'  
+# Clean up .DS_Store files
+dataset_cleanup_path = os.getenv('DATASET_CLEANUP_PATH', 'ml-model/')
+if os.path.exists(dataset_cleanup_path):
+    os.system(f"find {dataset_cleanup_path} -name '.DS_Store' -type f -delete")
+
+# Configuration - Load from environment variables with defaults
+img_size_str = os.getenv('IMG_SIZE', '96,96')
+IMG_SIZE = tuple(map(int, img_size_str.split(',')))
+BATCH_SIZE = int(os.getenv('BATCH_SIZE', '32'))
+NUM_CLASSES = int(os.getenv('NUM_CLASSES', '7'))
+MODEL_PATH = os.getenv('MODEL_PATH', 'ml-model/emotion-recognition-model-6.2.keras')
+TEST_DIR = os.getenv('DATASET_TEST_DIR', 'ml-model/dataset-6.2/test')  
 CLASS_LABELS = ['Angry', 'Disgust', 'Fear', 'Happy', 'Neutral', 'Sad', 'Surprise']
 
 model = load_model(MODEL_PATH)
